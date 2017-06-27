@@ -1,8 +1,7 @@
 <?php
 
 
-$projectname="Tasks";
-$projectversion = "v0.0.3";
+// $projectname="Backlog management";
 
 $LANG=NULL;
 require('language.en.php');
@@ -13,10 +12,8 @@ $file="task.json";
 $jsonfile = file_get_contents($file);
 $json_b = json_decode($jsonfile, true);
 
-//if (isset(var))
 
 $json_a = $json_b["tasks"];
-//var_dump($json_a);
 $closed=0;
 $havetasks = 0;
 error_reporting(0);
@@ -61,7 +58,7 @@ function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
     array_multisort($sort_col, $dir, $arr);
 }
 
-# via http://richardathome.wordpress.com/2006/03/28/php-function-to-return-the-number-of-days-between-two-dates/
+# return-the-number-of-days-between-two-dates/
 function dateDiff($start, $end) {
     $start_ts = strtotime($start);
     $end_ts = strtotime($end);
@@ -125,7 +122,9 @@ function listtasks($json_a,$taskstatus,$outputformat) {
                     echo "<td>".$task['task']."</td>";
                     if ($taskstatus == "open") {
                         $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),$vandaag);
-                    } elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
+                    } elseif ($taskstatus == "progress"){
+                        $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),$vandaag);
+                    }elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
                         $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),str_replace('-', '/',$task["donedate"]));
                        
                     } elseif ($taskstatus == "closed" || $taskstatus == "deleted" && !preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
@@ -179,14 +178,32 @@ function listtasks($json_a,$taskstatus,$outputformat) {
 
                     switch ($taskstatus) {
                         case 'open':
-                                            #done
-                        echo "<a href=\"action.php?id=" .$item. "&action=done\"><span class=\"icon small darkgray\" data-icon=\"C\"></span></a>";
+                                            #progress
+                        echo "<a href=\"action.php?id=" .$item. "&action=progress\"><span class=\"icon small darkgray\" data-icon=\"j\"></span></a>";
+
+                        
                                             #edit
                         echo "  ";
                         echo "<a href=\"action.php?id=" .$item. "&action=edit\"><span class=\"icon small darkgray\" data-icon=\"7\"></span></a>";
+
+                         #delete
+                        echo "  ";
+                        echo "<a href=\"action.php?id=" . $item . "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
+
+                        break;
+
+                        case 'progress':
+                                            #done
+                        echo "<a href=\"action.php?id=" .$item. "&action=done\"><span class=\"icon small darkgray\" data-icon=\"C\"></span></a>";
+
+                                            #edit
+                        echo "  ";
+                        echo "<a href=\"action.php?id=" .$item. "&action=edit\"><span class=\"icon small darkgray\" data-icon=\"7\"></span></a>";
+
                                             #delete
                         echo "  ";
                         echo "<a href=\"action.php?id=" . $item . "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
+
                         break;
 
                         case 'closed':

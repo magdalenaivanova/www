@@ -128,6 +128,35 @@ if (empty($_GET['action'])) {
 		echo $LANG["redirected"];
 		redirect();
 	}
+} elseif (isset($_GET['action']) && $_GET['action'] == 'progress' && !empty($_GET['id'])) {
+	#task is done
+	$taskid=htmlspecialchars($_GET['id']);
+	$vandaag=date('m-d-Y');
+	foreach ($json_a as $item => $task) {
+		if ($item == $taskid) {
+			$found = 1;
+			$current = file_get_contents($file);
+			$current = json_decode($current, TRUE);
+			#donedate???
+			$json_progress["tasks"]["$taskid"] = array("task" => $task['task'], "status" => "progress", "duedate" => $task["duedate"], "dateadded" => $task["dateadded"], "priority" => $task["priority"], "donedate" => $vandaag);
+			$progress = array_replace_recursive($current, $json_progress);
+			$progress = json_encode($progress);
+			if(file_put_contents($file, $progress, LOCK_EX)) {
+				echo $LANG["progress"];
+				echo $LANG["redirected"];
+				redirect();
+			} else {
+				echo $LANG["etasknotdone"];
+				echo $LANG["redirected"];
+				redirect();
+			}
+		}
+	}
+	if ($found==0) {
+		echo $LANG["etasknotfound"];
+		echo $LANG["redirected"];
+		redirect();
+	}
 } elseif (isset($_GET['action']) && $_GET['action'] == 'done' && !empty($_GET['id'])) {
 	#task is done
 	$taskid=htmlspecialchars($_GET['id']);

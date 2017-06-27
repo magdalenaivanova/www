@@ -6,6 +6,7 @@ include("header.php");
 
 echo "<ul class=\"tabs left\">";
 echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
+echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
 echo "</ul>";
@@ -30,7 +31,12 @@ echo "</p>";
 
 echo "</div> <!-- tab div -->";
 
+echo "<div class=\"tab-content\" id=\"progresstab\">";
+echo "<h2>".$LANG["progress"]."</h2>";
 
+listtasks($json_a,"progress","table");
+
+echo "</div> <!-- tab div -->";
 
 echo "<div class=\"tab-content\" id=\"finishedtab\">";
 
