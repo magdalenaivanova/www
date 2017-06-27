@@ -4,12 +4,13 @@
 include("header.php");
 
 
-echo "<ul class=\"menu horizontal\">";
+echo "<ul class=\"menu vertical\">";
 echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
 echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
 echo "</ul>";
+
 
 
 echo "<div id=\"maintab\" class=\"menu-content\">";

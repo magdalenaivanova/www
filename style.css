@@ -11,16 +11,17 @@ h1{
 	margin-bottom: 5%;
 }
 
-.horizontal{
-	padding-left: 10%;
-	width: 100%;
+.vertical{
+	width: 10%;
+	height: 100%;
 	margin: 0 auto;
 	position: fixed;
 	top: 0;
-	left: 0;
+	left: 10%;
 	display: inline-block;
 	font-size: 1vw;
 }
+
 
 table{
 	width: 100%;
@@ -73,11 +74,13 @@ body{
 }
 
 #wrap{
-	width:80%;
+	width:70%;
 	height: 100%;
 	background:#fff;
 	margin: 0 auto;
+	margin-left: 20%;
 	padding: 5% 0;
+
 	border:1px solid #ccc;
 }
 
