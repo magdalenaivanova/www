@@ -4,7 +4,7 @@
 include("header.php");
 
 
-echo "<ul class=\"tabs center\">";
+echo "<ul class=\"menu vertical\">";
 echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
 echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
@@ -12,7 +12,7 @@ echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
 echo "</ul>";
 
 
-echo "<div id=\"maintab\" class=\"tab-content\">";
+echo "<div id=\"maintab\" class=\"menu-content\">";
 echo "<h3>".$LANG["addtask"]."</h3>";
 
 echo "<p>";
@@ -31,21 +31,21 @@ echo "</p>";
 
 echo "</div> <!-- tab div -->";
 
-echo "<div class=\"tab-content\" id=\"progresstab\">";
+echo "<div class=\"menu-content\" id=\"progresstab\">";
 echo "<h3>".$LANG["progress"]."</h3>";
 
 listtasks($json_a,"progress","table");
 
 echo "</div> <!-- tab div -->";
 
-echo "<div class=\"tab-content\" id=\"finishedtab\">";
+echo "<div class=\"menu-content\" id=\"finishedtab\">";
 
 echo "<h3>".$LANG["finishedtasks"]."</h3>";
 	listtasks($json_a,"closed","table");
 
 echo "</div> <!-- tab div -->";
 
-echo "<div class=\"tab-content\" id=\"thrashtab\">";
+echo "<div class=\"menu-content\" id=\"thrashtab\">";
 echo "<h3>".$LANG["thrash"]."</h3>";
 
 listtasks($json_a,"deleted","table");

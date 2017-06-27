@@ -11,6 +11,24 @@ h1{
 	margin-bottom: 5%;
 }
 
+.vertical{
+	width: 15%;
+	display: inline-block;
+	font-size: 1vw;
+}
+
+table{
+	width: 100%;
+}
+
+#maintab{
+	width: 80%;
+	margin: 0;
+	padding: 2%;
+	float: right;
+	display: inline-block;
+}
+
 table{
 	width: 100%;
 }
