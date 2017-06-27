@@ -2,7 +2,7 @@
 
 $LANG = array(
     "tasktodo" => "Task/Todo",
-    "addtask" => "Add task",
+    "addtask" => "Add new task",
     "task" => "Task",
     "daysopen" => "Days open",
     "duedate" => "Due date",
@@ -14,7 +14,7 @@ $LANG = array(
     "normal" => "Normal",
     "low" => "Low",
     "onhold" => "On hold",
-    "tasks" => "Tasks",
+    "tasks" => "To Do",
     "taskupdated" => "Task updated",
     "redirected" => "You will now be redirected back to the task list. <br /><a href=\"index.php\">If that does not happen, please click here.</a>",
     "eupdatetask" => "Error: Task could not be updated.",
@@ -27,7 +27,7 @@ $LANG = array(
     "taskdeleted" => "The task is deleted.",
     "noactiongiven" => "Error: no correct action given. ",
     "thrash" => "Trash Bin",
-    "progress" => "In progress",
+    "progress" => "Tasks In Progress",
     "backtohomepage" => "Back to the main page",
     "tobin" => "Trash Bin",
     "updatetask" => "Update task",

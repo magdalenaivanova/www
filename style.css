@@ -1,19 +1,18 @@
-/*
-	99Lime.com HTML KickStart by Joshua Gatcke
-	style.css
-	
-*/
 
-/*---------------------------------
-	IMPORTS
------------------------------------*/
 @import url(http://fonts.googleapis.com/css?family=Arimo:400,700);
 
-/*---------------------------------
-	OVERRIDES
------------------------------------*/
 h1,h2,h3,h4,h5,h6{
 font-family: "Trebuchet Ms", arial, verdana, sans-serif;
+}
+
+h1{
+	color: #005c99;
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+table{
+	width: 100%;
 }
 
 thead th,
@@ -41,18 +40,20 @@ font-family: "Trebuchet Ms", arial, verdana, sans-serif;
 	LAYOUT
 -----------------------------------*/
 body{
+	width: 100%;
 	margin:0;
 	padding:0;
 	color:#000;
-	background:#efefef url(css/img/grid.png) repeat center top;
+	background:#005c99;
 	font:normal 0.9em/150% 'Arimo', "Trebuchet MS", arial, verdana, sans-serif;
-	text-shadow: 0px 0px 1px transparent; /* google font pixelation fix */
+	text-shadow: 0px 0px 1px transparent; 
 }
 
 #wrap{
-	width:960px;/*960*/
+	width:80%;
+	height: 100%;
 	background:#fff;
-	margin:30px auto 30px auto;
+	margin: 0 auto;
 	padding:0;
 	border:1px solid #ccc;
 }
@@ -60,6 +61,7 @@ body{
 .menu{
 	margin:-1px -1px 0 -1px;
 }
+
 
 
 #footer{
