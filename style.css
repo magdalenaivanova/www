@@ -11,8 +11,13 @@ h1{
 	margin-bottom: 5%;
 }
 
-.vertical{
-	width: 15%;
+.horizontal{
+	padding-left: 10%;
+	width: 100%;
+	margin: 0 auto;
+	position: fixed;
+	top: 0;
+	left: 0;
 	display: inline-block;
 	font-size: 1vw;
 }
@@ -72,7 +77,7 @@ body{
 	height: 100%;
 	background:#fff;
 	margin: 0 auto;
-	padding:0;
+	padding: 5% 0;
 	border:1px solid #ccc;
 }
 

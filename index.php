@@ -4,7 +4,7 @@
 include("header.php");
 
 
-echo "<ul class=\"menu vertical\">";
+echo "<ul class=\"menu horizontal\">";
 echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
 echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
