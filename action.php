@@ -1,7 +1,30 @@
 <?php
 
 include("header.php");
+include 'connection.php';
+			
+$dbConnection = new DatabaseConnection();
+$conn = $dbConnection->getConnection();
+$validUserStmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");		
+		
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$username=htmlspecialchars($_POST['username']);
+	$password=htmlspecialchars($_POST['password']);
+	session_start();
 
+	$currentUser = null;
+
+	$validUserStmt->execute(array($username, $password));
+	$currentUser=$validUserStmt->fetch(PDO::FETCH_ASSOC);
+
+	if($currentUser != null) {
+		$_SESSION['loggedin'] = true;
+		$_SESSION['currentUser'] = $currentUser;
+	}
+	
+	redirect();
+	return;
+}
 
 if (empty($_GET['action'])) {
 	echo $LANG["noactiongiven"];

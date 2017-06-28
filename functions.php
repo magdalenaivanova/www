@@ -18,6 +18,17 @@ $closed=0;
 $havetasks = 0;
 error_reporting(0);
 
+function showLoginForm($actionpage) {
+    echo "<form name=\"login\" action=\"action.php\" method=\"post\">";
+    echo "<label><b>Username</b></label>";
+    echo '<input type="text" placeholder="Enter Username" name="username" required><br/>';
+
+    echo "<label><b>Password</b></label>";
+    echo '<input type="password" placeholder="Enter Password" name="password" required><br/>';
+
+    echo "<input type=\"submit\" name=\"submit\" value=\"Login\"></input>";
+    echo"</form>";
+}
 
 function showinputform($actionpage) {
     global $LANG;

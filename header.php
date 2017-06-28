@@ -25,5 +25,6 @@ include("functions.php");
 	<li><a href="#finishedtab"><?php echo $LANG["finishedtasks"] ?></a></li>
 	<li><a href="#thrashtab"><?php echo $LANG["thrash"] ?></a></li>
 	<li><a href="#infotab"><?php echo $LANG["about"] ?> </a></li>
+	<li><a href="logout.php" >Logout</a></li>
 </ul>
 
