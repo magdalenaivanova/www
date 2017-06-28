@@ -5,9 +5,15 @@ include("header.php");
 
 session_start();
 if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
+	echo "</ul>";
 	showLoginForm("action.php");
 	return;
+}else{
+	echo "<li><a href=\"logout.php\">Logout</a></li>";
+	echo "</ul>";
 }
+
+
 
 echo "<div id=\"maintab\" class=\"menu-content\">";
 echo "<h3>".$LANG["addtask"]."</h3>";
