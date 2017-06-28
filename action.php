@@ -214,7 +214,13 @@ if (empty($_GET['action'])) {
 		redirect();
 	}
 } else {
-	echo $LANG["noactiongiven"];
+	// echo "<meta http-equiv=\"refresh\" content=\"5/>";
+	echo "<div class=\"notice error\">".$LANG["noactiongiven"]."<div/>";
+	echo "<div><a href=\"./\">Go back!</a></div>";
+
+	// redirect();
+		// sleep(1);
+	// echo $LANG["noactiongiven"];
 }	
 
 ?>

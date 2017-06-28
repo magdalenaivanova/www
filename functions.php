@@ -27,6 +27,7 @@ function showinputform($actionpage) {
     echo "<th><center>".$LANG["task"]."</center></th>";
     echo "<th>".$LANG["priority"]."</th>";
     echo "<th>".$LANG["duedate"]."</th>";
+    echo "<th>".$LANG["assignee"]."</th>";
     echo "<th></th>";
     echo "</tr>";
     echo "<tr>";
@@ -45,6 +46,13 @@ function showinputform($actionpage) {
     echo "</td><td>";
     echo "<input type=\"hidden\" name=\"action\" value=\"add\"></input>";
     echo "<input name=\"dateadded\" type=\"hidden\" value=\"${vandaag}\"></input>\n";
+        echo "<select name=\"assignee\">\n";
+        echo "<option value=\"2\">Ivan Petkov</option>\n";
+        echo "<option value=\"1\">".$LANG["high"]."</option>\n";
+        echo "<option value=\"3\">".$LANG["low"]."</option>\n";
+        echo "<option value=\"4\">".$LANG["onhold"]."</option>\n";
+        echo "</select>\n";
+    echo "</td><td>";
     echo "<input type=\"submit\" name=\"submit\" value=\"".$LANG["addtask"]."\"></input>";
     echo "</form>";
     echo "</table>";
@@ -67,8 +75,6 @@ function dateDiff($start, $end) {
 }
 
 
-
-
 function listtasks($json_a,$taskstatus,$outputformat) {
     global $LANG;
     $vandaag=date('d-m-Y');
@@ -83,8 +89,9 @@ function listtasks($json_a,$taskstatus,$outputformat) {
         echo "<th>".$LANG["task"]."</th>";
         echo "<th>".$LANG["daysopen"]."</th>";
         echo "<th>".$LANG["duedate"]."</th>";
-
-        echo "<th> </th>";
+        echo "<th>".$LANG["assignee"]."</th>";
+        echo "<th>".$LANG["assigner"]."</th>";
+        echo "<th>".$LANG["act"]."</th>";
         echo "</tr>";
         echo "</thead>";
      
@@ -173,6 +180,10 @@ function listtasks($json_a,$taskstatus,$outputformat) {
                     }
 
                     echo "</td>";
+
+                    echo "<td>test assignee</td>";
+
+                    echo "<td>test assigner</td>";
                                     #action:
                     echo "<td>";
 
@@ -181,10 +192,7 @@ function listtasks($json_a,$taskstatus,$outputformat) {
                                             #progress
                         echo "<a href=\"action.php?id=" .$item. "&action=progress\"><span class=\"icon small darkgray\" data-icon=\"j\"></span></a>";
 
-                        
-                                            #edit
-                        echo "  ";
-                        echo "<a href=\"action.php?id=" .$item. "&action=edit\"><span class=\"icon small darkgray\" data-icon=\"7\"></span></a>";
+
 
                          #delete
                         echo "  ";
@@ -209,6 +217,10 @@ function listtasks($json_a,$taskstatus,$outputformat) {
                         case 'closed':
                         echo "<a href=\"action.php?id=" .$item. "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
                         break;
+
+                        case 'deleted':
+                        echo "<span>-</span>";
+                        break;
                     }                                        
                     echo "</td>";
                     echo "</tr>";
@@ -218,7 +230,7 @@ function listtasks($json_a,$taskstatus,$outputformat) {
         }
         if($havetasks == 0) {
                
-                echo "<tr><td colspan=6>".$LANG["notasks"]."</td></tr>";  
+                echo "<tr><td colspan=7>".$LANG["notasks"]."</td></tr>";  
              
         }
     } else { 

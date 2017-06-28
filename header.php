@@ -17,3 +17,13 @@ include("functions.php");
 </head><body><a id="top-of-page"></a><div id="wrap" class="clearfix">
 <div class="col_12">
 <h1>Backlog management system</h1>
+
+<ul class="menu vertical">
+	<li><a href="#maintab"><?php echo $LANG["addtask"] ?></a></li>
+	<li><a href="#todotab"><?php echo $LANG["tasks"] ?></a></li>
+	<li><a href="#progresstab"><?php echo $LANG["progress"] ?></a></li>
+	<li><a href="#finishedtab"><?php echo $LANG["finishedtasks"] ?></a></li>
+	<li><a href="#thrashtab"><?php echo $LANG["thrash"] ?></a></li>
+	<li><a href="#infotab"><?php echo $LANG["about"] ?> </a></li>
+</ul>
+

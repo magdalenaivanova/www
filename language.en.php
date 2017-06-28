@@ -1,10 +1,14 @@
 <?php 
 
 $LANG = array(
-    "tasktodo" => "Task/Todo",
+    "about" => "About us",
+    "assignee" => "Assignee",
+    "assigner" => "Assigner",
+    "act" => "Action(s)",
+    "tasktodo" => "Task name...",
     "addtask" => "Add new task",
     "task" => "Task",
-    "daysopen" => "Days open",
+    "daysopen" => "Day(s) open",
     "duedate" => "Due date",
     "priority" => "Priority",
     "action" => "Action",
@@ -26,8 +30,8 @@ $LANG = array(
     "etasknotdeleted" => "Error: the task could not be deleted. Please check JSON permissions.",
     "taskdeleted" => "The task is deleted.",
     "noactiongiven" => "Error: no correct action given. ",
-    "thrash" => "Trash Bin",
-    "progress" => "Tasks In Progress",
+    "thrash" => "Deleted Tasks",
+    "progress" => "Tasks in progress",
     "backtohomepage" => "Back to the main page",
     "tobin" => "Trash Bin",
     "updatetask" => "Update task",

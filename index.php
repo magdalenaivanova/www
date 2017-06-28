@@ -4,15 +4,6 @@
 include("header.php");
 
 
-echo "<ul class=\"menu vertical\">";
-echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
-echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
-echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
-echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
-echo "</ul>";
-
-
-
 echo "<div id=\"maintab\" class=\"menu-content\">";
 echo "<h3>".$LANG["addtask"]."</h3>";
 
@@ -21,16 +12,18 @@ echo "<p>";
 showinputform("action.php");
 
 echo "</p>";
+echo "</div> <!-- tab div -->";
 
-echo "<p>";
+
+echo "<div class=\"menu-content\" id=\"todotab\">";
 echo "<h3>".$LANG["todo"]."</h3>";
 
 listtasks($json_a,"open","table");
 
-echo "</p>";
-
-
 echo "</div> <!-- tab div -->";
+
+
+
 
 echo "<div class=\"menu-content\" id=\"progresstab\">";
 echo "<h3>".$LANG["progress"]."</h3>";
@@ -53,13 +46,15 @@ listtasks($json_a,"deleted","table");
 
 echo "</div> <!-- tab div -->";
 
+
+
+echo "<div class=\"menu-content\" id=\"infotab\">";
+echo "<h3>".$LANG["about"]."</h3>";
+
+echo "<p><ul><li>Desislava Asenova - 61838</li><li>Magdalena Ivanova - 61786</li></ul</p>";
+
+echo "</div> <!-- tab div-->";
+
 echo "</div><!--col_12 -->";
-
-echo "<div class=\"col_6\">";
-
-echo "<h2>".$LANG["info"] . "</h2><p>".$LANG["infotext"]."</p>";
-
-echo "</div> <!-- col_ -->";
-
 
 include("footer.php");

@@ -23,25 +23,31 @@ h1{
 }
 
 
+.vertical li a{
+	color: #005c99;
+}
+
+.vertical li{
+	background: #e6f5ff;
+	border-bottom: 1px solid #005c99;
+}
+
+.vertical li:first-child{
+	border-top: 1px solid #005c99;
+}
+
 table{
 	width: 100%;
 }
 
-#maintab{
-	width: 80%;
-	margin: 0;
-	padding: 2%;
-	float: right;
-	display: inline-block;
-}
-
-table{
-	width: 100%;
-}
 
 thead th,
 tbody th{
 font-family: "Trebuchet Ms", arial, verdana, sans-serif;
+}
+
+.menu-content{
+	margin-top: 10%;
 }
 
 button,
@@ -79,14 +85,9 @@ body{
 	background:#fff;
 	margin: 0 auto;
 	margin-left: 20%;
-	padding: 5% 0;
-
 	border:1px solid #ccc;
 }
 
-.menu{
-	margin:-1px -1px 0 -1px;
-}
 
 
 
