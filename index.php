@@ -16,7 +16,6 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 	echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 	echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
-
 	echo "</ul>";
 }
 

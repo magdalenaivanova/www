@@ -30,19 +30,19 @@ $LANG = array(
     "etasknotdeleted" => "Error: the task could not be deleted. Please check JSON permissions.",
     "taskdeleted" => "The task is deleted.",
     "noactiongiven" => "Error: no correct action given. ",
-    "thrash" => "Deleted Tasks",
+    "thrash" => "Deleted tasks",
     "progress" => "Tasks in progress",
     "backtohomepage" => "Back to the main page",
     "tobin" => "Trash Bin",
     "updatetask" => "Update task",
     "notasks" => "No tasks.",
-    "todo" => "To do",
+    "todo" => "To Do",
     "daysleft" => " days left",
     "dayslate" => " days late",
     "today" => "Today!",
     "infotext" => 'infotext',
     "info" => "Info",
-    "finishedtasks" => "Finished Tasks",
+    "finishedtasks" => "Finished tasks",
 );
 
 ?>
