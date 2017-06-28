@@ -1,8 +1,6 @@
 <?php
 
 
-// $projectname="Backlog management";
-
 $LANG=NULL;
 require('language.en.php');
 
@@ -33,9 +31,9 @@ function showLoginForm($actionpage) {
 function showinputform($actionpage) {
     global $LANG;
     $vandaag=date('m-d-Y');
-    echo "<table class=\"striped\">";
+    echo "<table class=\"default\">";
     echo "<tr>";
-    echo "<th><center>".$LANG["task"]."</center></th>";
+    echo "<th>".$LANG["task"]."</th>";
     echo "<th>".$LANG["priority"]."</th>";
     echo "<th>".$LANG["duedate"]."</th>";
     echo "<th>".$LANG["assignee"]."</th>";
