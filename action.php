@@ -4,18 +4,13 @@ include("header.php");
 include 'connection.php';
 			
 $dbConnection = new DatabaseConnection();
-$conn = $dbConnection->getConnection();
-$validUserStmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");		
 		
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$username=htmlspecialchars($_POST['username']);
 	$password=htmlspecialchars($_POST['password']);
 	session_start();
 
-	$currentUser = null;
-
-	$validUserStmt->execute(array($username, $password));
-	$currentUser=$validUserStmt->fetch(PDO::FETCH_ASSOC);
+	$currentUser = $dbConnection->getUser($username, $password);
 
 	if($currentUser != null) {
 		$_SESSION['loggedin'] = true;
@@ -28,8 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (empty($_GET['action'])) {
 	echo $LANG["noactiongiven"];
+	return;
+}
 
-} elseif (isset($_GET['action']) && $_GET['action'] == 'edit' ) {
+if (isset($_GET['action']) && $_GET['action'] == 'edit' ) {
 #toon editformulier 
 	$taskid=htmlspecialchars($_GET['id']);
 	$found=0;
@@ -70,9 +67,11 @@ if (empty($_GET['action'])) {
 		
 	if ($found == 0) {
 		echo $LANG["etasknotfound"];
-	} 
-	
-} elseif (isset($_GET['submit']) && $_GET['action'] == 'update' && !empty($_GET['id']) && !empty($_GET['task']) && !empty($_GET['prio'])) {
+	}
+	return;
+}
+
+if (isset($_GET['submit']) && $_GET['action'] == 'update' && !empty($_GET['id']) && !empty($_GET['task']) && !empty($_GET['prio'])) {
 #update task
 	$taskid=htmlspecialchars($_GET['id']);
 	$senttask=htmlspecialchars($_GET['task']);
@@ -113,44 +112,22 @@ if (empty($_GET['action'])) {
 	
 } elseif (isset($_GET['submit']) && $_GET['action'] == 'add' && !empty($_GET['task']) && !empty($_GET['prio'])) {
 	#add task
-	$id=substr(md5(rand()), 0, 20);
-	$task=htmlspecialchars($_GET['task']);
-	$duedate=htmlspecialchars($_GET['duedate']);
-	# If the due date is empty we replace it with a dash. And if the due date is in the past we also do that.
-	if (empty($duedate)) {
-		$duedate = "-";
-	} elseif (!preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/', $duedate)) {
-
-		$duedate = "-";
-	}
-	$dateadded=date('m-d-Y');
+	
+	$taskName=htmlspecialchars($_GET['task']);
+	$dueDate=htmlspecialchars($_GET['duedate']);
+	$description=htmlspecialchars($_GET['description']);
+	$assignee_id=htmlspecialchars($_GET['assignee_id']);
 	$priority=htmlspecialchars($_GET['prio']);
+	
 	#Validating priority. Only 4 possibilities.
 	if ($priority != "1" && $priority != "2" && $priority != "3" && $priority != "4") {
 		$priority = 2;
 	}
-	$current = file_get_contents($file);
-	$current = json_decode($current, TRUE);
-	$json_add["tasks"]["$id"] = array("task" => $task, "status" => "open", "duedate" => $duedate, "dateadded" => $dateadded, "priority" => $priority);
-		
-		
+	
+	// addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id)
+	$dbConnection->addNewTask($taskName, $priority, 'in progress', $dueDate, $description, NULL);
+	redirect();
 
-	if(is_array($current)) {
-		$current = array_merge_recursive($json_add, $current);
-	} else {
-		$current = $json_add;
-	}
-
-	$current=json_encode($current);	
-	if(file_put_contents($file, $current, LOCK_EX)) {
-		echo $LANG["taskadded"];
-		echo $LANG["redirected"];
-		redirect();
-	} else {
-		echo $LANG["etasknotadded"];
-		echo $LANG["redirected"];
-		redirect();
-	}
 } elseif (isset($_GET['action']) && $_GET['action'] == 'progress' && !empty($_GET['id'])) {
 	#task is done
 	$taskid=htmlspecialchars($_GET['id']);

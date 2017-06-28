@@ -32,7 +32,7 @@ function showLoginForm($actionpage) {
 
 function showinputform($actionpage) {
     global $LANG;
-    $vandaag=date('m-d-Y');
+    $vandaag=date('Y-m-d');
     echo "<table class=\"striped\">";
     echo "<tr>";
     echo "<th><center>".$LANG["task"]."</center></th>";
