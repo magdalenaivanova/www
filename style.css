@@ -82,10 +82,11 @@ body{
 
 #wrap{
 	width:70%;
+	padding-left: 10%;
 	height: 100%;
 	background:#fff;
 	margin: 0 auto;
-	margin-left: 20%;
+	/*margin-left: 20%;*/
 	border:1px solid #ccc;
 }
 
