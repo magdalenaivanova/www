@@ -91,7 +91,14 @@ body{
 }
 
 
+form[name="login"]{
+	padding: 0 0 3% 54%;
+}
 
+
+form[name="login"] input[name="submit"]{
+	margin: 2% 0 0 43%;
+}
 
 #footer{
 	text-align:center;
