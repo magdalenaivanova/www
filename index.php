@@ -10,11 +10,13 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	return;
 }else{
 	echo "<ul class=\"menu vertical\">";
-	echo "<li><a href=\"#maintab\">".$LANG["tasks"]."</a></li>";
+	echo "<li style=\"margin-bottom:20%\"><a href=\"logout.php\">Logout</a></li>";
+	echo "<li><a href=\"#maintab\">".$LANG["addtask"]."</a></li>";
+	echo "<li><a href=\"#todotab\">".$LANG["tasks"]."</a></li>";
 	echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 	echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 	echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
-	echo "<li><a href=\"logout.php\">Logout</a></li>";
+
 	echo "</ul>";
 }
 
