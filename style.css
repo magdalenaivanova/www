@@ -96,7 +96,7 @@ body{
 }
 
 .default th{
-	text-align: left;
+	text-align: center;
 }
 
 form[name="login"]{
