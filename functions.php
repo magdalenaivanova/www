@@ -3,15 +3,12 @@
 
 $LANG=NULL;
 require('language.en.php');
+require('connection.php');
 
+session_start();
 
-$file="task.json";
+$dbConnection = new DatabaseConnection();
 
-$jsonfile = file_get_contents($file);
-$json_b = json_decode($jsonfile, true);
-
-
-$json_a = $json_b["tasks"];
 $closed=0;
 $havetasks = 0;
 error_reporting(0);
@@ -55,7 +52,7 @@ function showinputform($actionpage) {
     echo "<input name=\"duedate\" type=\"text\" value=\"${vandaag}\"></input>\n";
     echo "</td><td>";
     echo "<input type=\"hidden\" name=\"action\" value=\"add\"></input>";
-    echo "<input name=\"dateadded\" type=\"hidden\" value=\"${vandaag}\"></input>\n";
+    echo "<input name=\"date_added\" type=\"hidden\" value=\"${vandaag}\"></input>\n";
         echo "<select name=\"assignee\">\n";
         echo "<option value=\"2\">Ivan Petkov</option>\n";
         echo "<option value=\"1\">".$LANG["high"]."</option>\n";
@@ -85,175 +82,147 @@ function dateDiff($start, $end) {
 }
 
 
-function listtasks($json_a,$taskstatus,$outputformat) {
-    global $LANG;
+function listtasks($taskstatus,$mngId) {
+    global $LANG, $dbConnection;
     $vandaag=date('d-m-Y');
     $havetasks = NULL;
     
-    array_sort_by_column($json_a, 'priority');
-
-        echo "<table class=\"sortable striped\">";
-        echo "<thead>";
+    $allTasks = $dbConnection->getTasksByStatus($taskstatus, $mngId);
+    
+    echo "<table class=\"sortable striped\">";
+    echo "<thead>";
+    echo "<tr>";
+    echo "<th>".$LANG["priority"]."</th>";
+    echo "<th>".$LANG["task"]."</th>";
+    echo "<th>".$LANG["daysopen"]."</th>";
+    echo "<th>".$LANG["duedate"]."</th>";
+    echo "<th>".$LANG["assignee"]."</th>";
+    echo "<th>".$LANG["assigner"]."</th>";
+    echo "<th>".$LANG["act"]."</th>";
+    echo "</tr>";
+    echo "</thead>";
+     
+    if(empty($allTasks) || !is_array($allTasks)) {
+        echo "<tr><td colspan=7>".$LANG["notasks"]."</td></tr></table>";  
+        return;
+    }
+    
+    foreach ($allTasks as $item => $task) {
         echo "<tr>";
-        echo "<th>".$LANG["priority"]."</th>";
-        echo "<th>".$LANG["task"]."</th>";
-        echo "<th>".$LANG["daysopen"]."</th>";
-        echo "<th>".$LANG["duedate"]."</th>";
-        echo "<th>".$LANG["assignee"]."</th>";
-        echo "<th>".$LANG["assigner"]."</th>";
-        echo "<th>".$LANG["act"]."</th>";
+
+        # task priority
+        echo "<td>";
+        switch ($task["priority"]) {
+            case 1:
+                echo "<font color = \"red\" >".$LANG["high"]."</font>"; break;
+            case 2:
+                echo $LANG["normal"]; break;
+            case 3:
+                echo $LANG["low"]; break;
+            case 4:
+                echo "<font color = \"#0011ee\" >".$LANG["onhold"]."</font>"; break;
+        }
+        echo "</td>";
+
+        # task name
+        echo "<td>".$task['task_name']."</td>";
+
+        # days open
+        $dayopen = NULL;
+        if ($taskstatus == "open") {
+            $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),$vandaag);
+        } elseif ($taskstatus == "progress"){
+            $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),$vandaag);
+        }elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
+            $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),str_replace('-', '/',$task["donedate"]));
+           
+        } elseif ($taskstatus == "closed" || $taskstatus == "deleted" && !preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
+            $dayopen = "-";
+        }
+
+        echo "<td>".$dayopen."</td>";
+
+        # due date
+        echo "<td>";
+        $dayclosed = $task["due_date"];
+        switch ($task["due_date"]) {
+            case '-': echo "-"; break;
+           
+            default:
+                $matches=NULL;
+
+                if (preg_match('/([0-9]{4}-[0-9]{2}-[0-9]{2})/', $task["due_date"],$matches)) {
+                    $taskduedate=$matches[0];
+                    $daysclosed = dateDiff($vandaag,str_replace('-', '/',$taskduedate));
+                    
+
+                    if ($daysclosed < 0) {
+                        $daysclosed = "<u>" .abs($daysclosed) . $LANG["dayslate"] . " (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")</u>";
+                    } elseif ($daysclosed == 0) {
+                        $daysclosed = "<b>".$LANG["today"]." (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")</b>";
+
+
+                    } else {
+                            $daysclosed = $daysclosed . $LANG["daysleft"] ." (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")";
+                    }
+                }                            
+
+                if ($taskstatus == "closed" || $taskstatus == "deleted") {
+                    echo date('D d M',strtotime(str_replace('-', '/',$taskduedate)));
+                } else {
+                    echo $daysclosed;
+                }
+                break;
+        }
+
+        echo "</td>";
+
+        $assignee = $dbConnection->getUserById($task['assignee_id']);
+        $assigner = $dbConnection->getUserById($task['assignee_mng_id']);
+
+        # assignee
+        if ($assignee == null) {
+            echo "<td>no one</td>";
+        } else {
+            echo "<td>".$assignee['first_name'] . " " . $assignee['last_name'] ."</td>";
+        }
+        
+        # assigner
+        echo "<td>" . $assigner['first_name'] . " " . $assigner['last_name'] . "</td>";
+
+        # action
+        echo "<td>";
+
+        switch ($taskstatus) {
+            case 'open':
+                showIcon("done", $item, "C");
+                echo "  ";
+                showIcon("edit", $item, "7");
+                echo "  ";
+                showIcon("delete", $item, "T");
+                break;
+
+            case 'progress':
+                showIcon("done", $item, "C");
+                echo "  ";
+                showIcon("edit", $item, "7");
+                echo "  ";
+                showIcon("delete", $item, "T");
+                break;
+
+            case 'closed':
+                showIcon("delete", $item, "T");
+                break;
+
+            case 'deleted':
+                echo "<span>-</span>";
+                break;
+        }                                        
+        echo "</td>";
         echo "</tr>";
-        echo "</thead>";
-     
+    }
 
-    if(is_array($json_a)) {     
-        $tasknumber=1;
-        $havetasks=NULL;
-        foreach ($json_a as $item => $task) {
-            if ($task['status'] == $taskstatus) {  
-            
-                $havetasks=1;
-
-                    echo "<tr>";
-                                    #Prio
-                    echo "<td>";
-
-                    switch ($task["priority"]) {
-                        case 1:
-                            echo "<font color = \"red\" >".$LANG["high"]."</font>";
-                            break;
-                        case 2:
-                            echo $LANG["normal"];
-                            break;
-                        case 3:
-                            echo $LANG["low"];
-                            break;
-                        case 4:
-                            echo "<font color = \"#0011ee\" >".$LANG["onhold"]."</font>";
-                            break;
-                    }
-
-                    echo "</td>";
-                    $dayopen = NULL;
-                                    #task
-                    echo "<td>".$task['task']."</td>";
-                    if ($taskstatus == "open") {
-                        $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),$vandaag);
-                    } elseif ($taskstatus == "progress"){
-                        $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),$vandaag);
-                    }elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
-                        $dayopen = dateDiff(str_replace('-', '/',$task["dateadded"]),str_replace('-', '/',$task["donedate"]));
-                       
-                    } elseif ($taskstatus == "closed" || $taskstatus == "deleted" && !preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/',$task["donedate"])) {
-                        $dayopen = "-";
-                    }
-
-                    echo "<td>".$dayopen."</td>";
-
-                    #due date
-                    echo "<td>";
-                    $dayclosed = $task["duedate"];
-                    switch ($task["duedate"]) {
-                        case '-':
-                            echo "-";
-                            break;
-                       
-                        default:
-                            $matches=NULL;
-
-                            if (preg_match('/([0-9]{2}-[0-9]{2}-[0-9]{4})/', $task["duedate"],$matches)) {
-                                $taskduedate=$matches[0];
-                                $daysclosed = dateDiff($vandaag,str_replace('-', '/',$taskduedate));
-                                
-
-                                if ($daysclosed < 0) {
-                                    $daysclosed = "<u>" .abs($daysclosed) . $LANG["dayslate"] . " (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")</u>";
-                                } elseif ($daysclosed == 0) {
-                                    $daysclosed = "<b>".$LANG["today"]." (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")</b>";
-
-
-                                } else {
-                                        $daysclosed = $daysclosed . $LANG["daysleft"] ." (".date('D d M',strtotime(str_replace('-', '/',$taskduedate))).")";
-                                }
-                            }                            
-
-                            if ($taskstatus == "closed" || $taskstatus == "deleted") {
-
-                                echo date('D d M',strtotime(str_replace('-', '/',$taskduedate)));
-                            } else {
-                                echo $daysclosed;
-                            }
-
-                            
-                            break;
-
-                    }
-
-                    echo "</td>";
-
-                    echo "<td>test assignee</td>";
-
-                    echo "<td>test assigner</td>";
-                                    #action:
-                    echo "<td>";
-
-                    switch ($taskstatus) {
-                        case 'open':
-                                            #progress
-                        echo "<a href=\"action.php?id=" .$item. "&action=progress\"><span class=\"icon small darkgray\" data-icon=\"j\"></span></a>";
-
-
-
-                         #delete
-                        echo "  ";
-                        echo "<a href=\"action.php?id=" . $item . "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
-
-                        break;
-
-                        case 'progress':
-                                            #done
-                        echo "<a href=\"action.php?id=" .$item. "&action=done\"><span class=\"icon small darkgray\" data-icon=\"C\"></span></a>";
-
-                                            #edit
-                        echo "  ";
-                        echo "<a href=\"action.php?id=" .$item. "&action=edit\"><span class=\"icon small darkgray\" data-icon=\"7\"></span></a>";
-
-                                            #delete
-                        echo "  ";
-                        echo "<a href=\"action.php?id=" . $item . "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
-
-                        break;
-
-                        case 'closed':
-                        echo "<a href=\"action.php?id=" .$item. "&action=delete\"><span class=\"icon small darkgray\" data-icon=\"T\"></span></a>";
-                        break;
-
-                        case 'deleted':
-                        echo "<span>-</span>";
-                        break;
-                    }                                        
-                    echo "</td>";
-                    echo "</tr>";
-                 
-                $tasknumber+=1;
-            }   
-        }
-        if($havetasks == 0) {
-               
-                echo "<tr><td colspan=7>".$LANG["notasks"]."</td></tr>";  
-             
-        }
-    } else { 
-     
-       echo "<tr><td colspan=6>".$LANG["notasks"]."</td></tr>";  
-    
-}
-
-
-    
     echo "</table>";
-
-
 }
 
 function redirect($page = "index.php") {
@@ -262,5 +231,8 @@ function redirect($page = "index.php") {
     echo "</script>";
 }
 
+function showIcon($action, $id, $icon) {
+    echo "<a href=\"action.php?id=" .$id. "&action=" . $action ."\"><span class=\"icon small darkgray\" data-icon=\" " . $icon . "\"></span></a>";
+}
 
 ?>

@@ -21,6 +21,7 @@ CREATE TABLE `tasks` (
   `priority` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
   `due_date` date NOT NULL,
+  `date_added` date NOT NULL,
   `description` varchar(120) DEFAULT NULL,
   `assignee_id` int(11) DEFAULT NULL,
   `assignee_mng_id` int(11) DEFAULT NULL,
