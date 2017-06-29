@@ -2,7 +2,9 @@
 
 include("header.php");
 include 'connection.php';
-			
+
+session_start();
+
 $dbConnection = new DatabaseConnection();
 		
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	if($currentUser != null) {
 		$_SESSION['loggedin'] = true;
-		$_SESSION['currentUser'] = $currentUser;
+		$_SESSION['user_id'] = $currentUser['user_id'];
+		$_SESSION['user_mng_id'] = $currentUser['mng_id'];
 	}
-	
 	redirect();
 	return;
 }
@@ -125,7 +127,7 @@ if (isset($_GET['submit']) && $_GET['action'] == 'update' && !empty($_GET['id'])
 	}
 	
 	// addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id)
-	$dbConnection->addNewTask($taskName, $priority, 'in progress', $dueDate, $description, NULL);
+	$dbConnection->addNewTask($taskName, $priority, 'open', $dueDate, $description, NULL, $_SESSION['user_mng_id']);
 	redirect();
 
 } elseif (isset($_GET['action']) && $_GET['action'] == 'progress' && !empty($_GET['id'])) {
