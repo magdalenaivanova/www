@@ -126,7 +126,7 @@ if (isset($_GET['submit']) && $_GET['action'] == 'add' && !empty($_GET['task']) 
 
 }
 
-if (isset($_GET['action']) && !empty($_GET['id'])) {
+if (isset($_GET['action']) && !empty($_GET['id']) && ($_GET['action'] == "progress" || $_GET['action'] == "done" || $_GET['action'] == "delete")) {
 	$taskid=htmlspecialchars($_GET['id']);
 	$task = $dbConnection->getTask($taskid);
 	if ($task==null) {
@@ -150,4 +150,6 @@ if (isset($_GET['action']) && !empty($_GET['id'])) {
 	return;
 }
 
+echo "<div class=\"notice error\">".$LANG["noactiongiven"]."<div/>";
+echo "<div><a href=\"./\">Go back!</a></div>";
 ?>
