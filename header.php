@@ -16,7 +16,8 @@ include("functions.php");
 <script type="text/javascript" src="js/prettify.js"></script>                                   
 <script type="text/javascript" src="js/kickstart.js"></script>                                  
 <link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />                  
-<link rel="stylesheet" type="text/css" href="style.css" media="all" />                          
+<link rel="stylesheet" type="text/css" href="style.css" media="all" />        
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">                  
 </head><body><a id="top-of-page"></a><div id="wrap" class="clearfix">
 <div class="col_12">
 <h1>Backlog management system</h1>
@@ -24,11 +25,4 @@ include("functions.php");
   $( function() {
     $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
   } );
-  </script>
-<!-- <ul class="menu vertical">
-	<li><a href="#maintab"><?php echo $LANG["addtask"] ?></a></li>
-	<li><a href="#todotab"><?php echo $LANG["tasks"] ?></a></li>
-	<li><a href="#progresstab"><?php echo $LANG["progress"] ?></a></li>
-	<li><a href="#finishedtab"><?php echo $LANG["finishedtasks"] ?></a></li>
-	<li><a href="#thrashtab"><?php echo $LANG["thrash"] ?></a></li>
-	<li><a href="#infotab"><?php echo $LANG["about"] ?> </a></li> -->
+</script>

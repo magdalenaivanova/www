@@ -1,9 +1,9 @@
 <?php
 
-
 include("header.php");
 
 session_start();
+
 if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	echo "</ul>";
 	showLoginForm("action.php");
@@ -17,64 +17,48 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 	echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
 	if($_SESSION['user_mng_id'] == $_SESSION['user_id']) {
-		echo "<li><a href=\"action.php?action=addemployee\">Add New Team Member</a></li>";
-		//echo "<li><a href=\"action.php?action=addemployee\">".$LANG["newemployee"]."</a></li>";
+		echo "<li><a href=\"action.php?action=addemployee\">Add Team Member</a></li>";
 	}
 	echo "</ul>";
 }
 
-
-
+# New task
 echo "<div id=\"maintab\" class=\"menu-content\">";
 echo "<h3>".$LANG["addtask"]."</h3>";
-
 echo "<p>";
-
 showinputform("action.php");
-
 echo "</p>";
-echo "</div> <!-- tab div -->";
+echo "</div>";
 
-
+# Open tasks
 echo "<div class=\"menu-content\" id=\"todotab\">";
 echo "<h3>".$LANG["todo"]."</h3>";
+listtasks("open");
+echo "</div>";
 
-listtasks("open", $_SESSION['user_mng_id']);
-
-echo "</div> <!-- tab div -->";
-
-
-
-
+# In progress tasks
 echo "<div class=\"menu-content\" id=\"progresstab\">";
 echo "<h3>".$LANG["progress"]."</h3>";
+listtasks("progress");
+echo "</div>";
 
-listtasks("progress", $_SESSION['user_mng_id']);
-
-echo "</div> <!-- tab div -->";
-
+# Closed tasks
 echo "<div class=\"menu-content\" id=\"finishedtab\">";
-
 echo "<h3>".$LANG["finishedtasks"]."</h3>";
-	listtasks("closed", $_SESSION['user_mng_id']);
+listtasks("closed");
+echo "</div>";
 
-echo "</div> <!-- tab div -->";
-
+# Deleted tasks
 echo "<div class=\"menu-content\" id=\"thrashtab\">";
 echo "<h3>".$LANG["thrash"]."</h3>";
+listtasks("deleted");
+echo "</div>";
 
-listtasks("deleted", $_SESSION['user_mng_id']);
-
-echo "</div> <!-- tab div -->";
-
-
-
+# Information
 echo "<div class=\"menu-content\" id=\"infotab\">";
 echo "<h3>".$LANG["about"]."</h3>";
-
 echo "<p><ul><li>Desislava Asenova - 61838</li><li>Magdalena Ivanova - 61786</li></ul</p>";
-
-echo "</div> <!-- tab div-->";
+echo "</div>";
 
 echo "</div><!--col_12 -->";
 

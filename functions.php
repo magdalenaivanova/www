@@ -83,19 +83,19 @@ function dateDiff($start, $end) {
 }
 
 
-function listtasks($taskstatus,$mngId) {
+function listtasks($taskstatus) { //,$mngId) {
     global $LANG, $dbConnection;
     $today=date('Y-m-d');
     $havetasks = NULL;
     
-    $allTasks = $dbConnection->getTasksByStatus($taskstatus, $mngId);
+    $allTasks = $dbConnection->getTasksByStatus($taskstatus, $_SESSION['user_mng_id']);
     
     echo "<table class=\"sortable striped\">";
     echo "<thead>";
     echo "<tr>";
     echo "<th>".$LANG["priority"]."</th>";
     echo "<th>".$LANG["task"]."</th>";
-    echo "<th>".$LANG["daysopen"]."</th>";
+    echo "<th>".$LANG["daysopen"]."</th>"; 
     echo "<th>".$LANG["duedate"]."</th>";
     echo "<th>".$LANG["assignee"]."</th>";
     echo "<th>".$LANG["assigner"]."</th>";
@@ -134,10 +134,10 @@ function listtasks($taskstatus,$mngId) {
             $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),$today);
         } elseif ($taskstatus == "progress"){
             $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),$today);
-        }elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{4}-[0-9]{2}-[0-9]{2})/',$task["donedate"])) {
-            $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),str_replace('-', '/',$task["donedate"]));
+        }elseif ($taskstatus == "closed"  || $taskstatus == "deleted" && preg_match('/([0-9]{4}-[0-9]{2}-[0-9]{2})/',$task["done_date"])) {
+            $dayopen = dateDiff(str_replace('-', '/',$task["date_added"]),str_replace('-', '/',$task["done_date"]));
            
-        } elseif ($taskstatus == "closed" || $taskstatus == "deleted" && !preg_match('/([0-9]{4}-[0-9]{2}-[0-9]{2})/',$task["donedate"])) {
+        } elseif ($taskstatus == "closed" || $taskstatus == "deleted" && !preg_match('/([0-9]{4}-[0-9]{2}-[0-9]{2})/',$task["done_date"])) {
             $dayopen = "-";
         }
 
@@ -191,7 +191,7 @@ function listtasks($taskstatus,$mngId) {
         # assigner
         echo "<td>" . $assigner['first_name'] . " " . $assigner['last_name'] . "</td>";
 
-        # action
+        # actions
         echo "<td>";
 
         switch ($taskstatus) {

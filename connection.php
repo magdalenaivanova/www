@@ -1,9 +1,16 @@
 <?php
+
+	include('config.php');
+
 	class DatabaseConnection {
+		// private $user   = "root";
+		// private $pass   = "";
+
 		private $host   = "localhost";
+		private $user   = null;
+		private $pass   = null;
+
 		private $db     = "backlog_db";
-		private $user   = "root";
-		private $pass   = "";
 		private $conn = null;
 		private $validUserStmt = null;
 		private $addNewTaskStmnt = null;
@@ -15,9 +22,13 @@
 		private $updateTaskStatusStmnt = null;
 		private $addNewUserStmnt = null;
 		private $changePasswordStmnt = null;
+		private $finishTaskStmnt = null;
 
 		public function __construct() {
+			$this->user   = $GLOBALS['DBUSER'];
+			$this->pass   = $GLOBALS['DBPASSWORD'];
 			$this->conn = new PDO("mysql:host=$this->host;dbname=$this->db",$this->user,$this->pass);
+
 			$this->validUserStmt = $this->conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
 			$this->getUserByIdStmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = ?");
 
@@ -30,6 +41,7 @@
 
 			$this->updateTaskStmnt = $this->conn->prepare("UPDATE tasks SET task_name = ?,  priority = ?, due_date = ?, description = ?, assignee_id = ? WHERE task_id = ?");
 			$this->updateTaskStatusStmnt = $this->conn->prepare("UPDATE tasks SET status = ? WHERE task_id = ?");
+			$this->finishTaskStmnt = $this->conn->prepare("UPDATE tasks SET status = ?, done_date =? WHERE task_id = ?");
 			$this->changePasswordStmnt = $this->conn->prepare("UPDATE users SET password = ? WHERE user_id = ? AND password = ?");
 
 		}
@@ -43,6 +55,7 @@
 		}
 
 		public function getUser($username, $password) {
+			$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 			$this->validUserStmt->execute(array($username, $password));
 			return $this->validUserStmt->fetch(PDO::FETCH_ASSOC);
 		}
@@ -77,11 +90,13 @@
 		}
 
 		public function deleteTask($taskid) {
-			$this->updateTaskStatusStmnt->execute(array("deleted", $taskid));
+			$today=date('Y-m-d');
+			$this->finishTaskStmnt->execute(array("deleted", $today, $taskid));
 		}
 
 		public function finishTask($taskid) {
-			$this->updateTaskStatusStmnt->execute(array("closed", $taskid));
+			$today=date('Y-m-d');
+			$this->finishTaskStmnt->execute(array("closed", $today, $taskid));
 		}
 
 		public function openTask($taskid) {
@@ -91,6 +106,7 @@
 		public function addNewEmployee($firstname, $lastname, $username, $email, $mng_id) {
 			// (user_id, username, password, mng_id, email, first_name, last_name)
 			$password = "qwerty";
+			//$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 			return $this->addNewUserStmnt->execute(array(NULL, $username, $password, $mng_id, $email, $firstname, $lastname));
 		}
 

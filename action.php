@@ -64,7 +64,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'addemployee' ) {
 
 	return;
 }
-// && !empty($_GET['firstname']) && !empty($_GET['lastname']) && !empty($_GET['username']) && !empty($_GET['email'])
+
 if (isset($_GET['submit']) && $_GET['action'] == 'submitemployee' && !empty($_GET['firstname']) && !empty($_GET['lastname']) && !empty($_GET['username']) && !empty($_GET['email'])) {
 	
 	$firstname=htmlspecialchars($_GET['firstname']);
@@ -73,11 +73,11 @@ if (isset($_GET['submit']) && $_GET['action'] == 'submitemployee' && !empty($_GE
 	$email=htmlspecialchars($_GET['email']);
 	$success = $dbConnection->addNewEmployee($firstname, $lastname, $username, $email, $_SESSION['user_mng_id']);
 	if ($success == true) {
-		echo "<div class=\"notice success\">You successfully registered new employee: ".$firstname." ".$lastname.". He or she will receive a confirmation e-mail.<div/>";
-		echo "<div><a href=\"./\">Go back!</a></div>";
+		echo "<div class=\"notice success\">You successfully registered new employee: ".$firstname." ".$lastname.". He or she will receive a confirmation e-mail.</div>";
+		echo "<form action=\"./\"><input type=\"submit\" value=\"Back\" /></form>";
 	} else {
-		echo "<div class=\"notice error\">Registration of new employee failed. Check your input or contact administration.<div/>";
-		echo "<div><a href=\"./\">Go back!</a></div>";
+		echo "<div class=\"notice error\">Registration of new employee failed. Check your input or contact administration.</div>";
+		echo "<form action=\"./\"><input type=\"submit\" value=\"Back\" /></form>";
 	}
 	return;
 }

@@ -1,0 +1,4 @@
+<?php
+	$DBUSER="root";
+	$DBPASSWORD="";
+?>
