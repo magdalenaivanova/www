@@ -50,11 +50,11 @@ function showinputform($actionpage) {
         echo "<option value=\"4\">".$LANG["onhold"]."</option>\n";
         echo "</select>\n";
     echo "</td><td>";
-    echo "<input name=\"duedate\" type=\"text\" value=\"${today}\"></input>\n";
+    echo "<input name=\"duedate\" type=\"text\" id=\"datepicker\" value=\"${today}\"></input>\n";
     echo "</td><td>";
     echo "<input type=\"hidden\" name=\"action\" value=\"add\"></input>";
     echo "<input name=\"date_added\" type=\"hidden\" value=\"${today}\"></input>\n";
-        echo "<select name=\"assignee\">\n";
+        echo "<select name=\"assignee_id\">\n";
             echo "<option value=\"\"></option>\n";
             foreach ($employees as $user => $employee) {
                 echo "<option value=\"".$employee['user_id']."\">".$employee['first_name']." ".$employee['last_name']."</option>\n";
@@ -85,7 +85,7 @@ function dateDiff($start, $end) {
 
 function listtasks($taskstatus,$mngId) {
     global $LANG, $dbConnection;
-    $today=date('Y-d-m');
+    $today=date('Y-m-d');
     $havetasks = NULL;
     
     $allTasks = $dbConnection->getTasksByStatus($taskstatus, $mngId);

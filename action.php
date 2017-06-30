@@ -16,7 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if($currentUser != null) {
 		$_SESSION['loggedin'] = true;
 		$_SESSION['user_id'] = $currentUser['user_id'];
-		$_SESSION['user_mng_id'] = $currentUser['mng_id'];
+		if($currentUser['mng_id'] == null) {
+			$_SESSION['user_mng_id'] = $currentUser['user_id'];
+		} else {
+			$_SESSION['user_mng_id'] = $currentUser['mng_id'];
+		}
 	}
 	redirect();
 	return;
@@ -41,7 +45,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' ) {
 	}
 
 	$employees = $dbConnection->getEmployees($task['assignee_mng_id']);
-	var_dump($task);
     echo "<table class=\"striped\">";
     echo "<tr>";
     echo "<th>".$LANG["task"]."</th>";
@@ -70,7 +73,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' ) {
 	        }
 	    echo "</select>\n";
 	    echo "</td><td>";
-	    echo "<input name=\"duedate\" type=\"text\" value=\"".$task["due_date"]."\"></input>\n";
+	    echo "<input name=\"duedate\" type=\"text\" id=\"datepicker\" value=\"".$task["due_date"]."\"></input>\n";
 	    echo "</td><td>";
 	    echo "<input type=\"hidden\" name=\"action\" value=\"update\"></input>";
 	    echo "<input type=\"hidden\" name=\"dateadded\" type=\"hidden\" value=\"".$task["dateadded"]."\"></input>\n";
@@ -120,7 +123,7 @@ if (isset($_GET['submit']) && $_GET['action'] == 'add' && !empty($_GET['task']) 
 	}
 	
 	// addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id)
-	$dbConnection->addNewTask($taskName, $priority, 'open', $dueDate, $description, NULL, $_SESSION['user_mng_id']);
+	$dbConnection->addNewTask($taskName, $priority, 'open', $dueDate, $description, $assignee_id, $_SESSION['user_mng_id']);
 	redirect();
 	return;
 
