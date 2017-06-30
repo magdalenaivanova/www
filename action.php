@@ -142,12 +142,7 @@ if (isset($_GET['submit']) && $_GET['action'] == 'update' && !empty($_GET['id'])
 	$dueDate=htmlspecialchars($_GET['duedate']);
 	$priority=htmlspecialchars($_GET['prio']);
 	$assigneeId=htmlspecialchars($_GET['assignee_id']);
-
-	var_dump($assigneeId);
-	if($assigneeId=="") {
-		$assigneeId = NULL;
-	}
-
+	
 	#Validating priority. Only 4 possibilities.
 	if ($priority != "1" && $priority != "2" && $priority != "3" && $priority != "4") {
 		$priority = 2;
@@ -167,14 +162,20 @@ if (isset($_GET['submit']) && $_GET['action'] == 'add' && !empty($_GET['task']) 
 	$description=htmlspecialchars($_GET['description']);
 	$assignee_id=htmlspecialchars($_GET['assignee_id']);
 	$priority=htmlspecialchars($_GET['prio']);
-	
+
+	$assignerId=$_SESSION['user_id'];
+
+	if($assigneeId=="") {
+		$assigneeId = NULL;
+		$assignerId = NULL;
+	}
+
 	#Validating priority. Only 4 possibilities.
 	if ($priority != "1" && $priority != "2" && $priority != "3" && $priority != "4") {
 		$priority = 2;
 	}
 	
-	// addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id)
-	$dbConnection->addNewTask($taskName, $priority, 'open', $dueDate, $description, $assignee_id, $_SESSION['user_mng_id']);
+	$dbConnection->addNewTask($taskName, $priority, 'open', $dueDate, $description, $assignee_id, $_SESSION['user_mng_id'], $_SESSION['user_id']);
 	redirect();
 	return;
 

@@ -43,7 +43,7 @@ function showinputform($actionpage) {
     echo "<form name=\"edit\" action=\"action.php\" method=\"GET\">";
     echo "<input name=\"task\" size=40 type=\"text\" placeholder=\"".$LANG["tasktodo"]."\" required></input>";
     echo "</td><td>";
-    echo "<select name=\"prio\" required>\n";
+    echo "<select name=\"prio\">\n";
         echo "<option value=\"2\">".$LANG["normal"]."</option>\n";
         echo "<option value=\"1\">".$LANG["high"]."</option>\n";
         echo "<option value=\"3\">".$LANG["low"]."</option>\n";
@@ -179,7 +179,7 @@ function listtasks($taskstatus) { //,$mngId) {
         echo "</td>";
 
         $assignee = $dbConnection->getUserById($task['assignee_id']);
-        $assigner = $dbConnection->getUserById($task['assignee_mng_id']);
+        $assigner = $dbConnection->getUserById($task['creator_id']);
 
         # assignee
         if ($assignee == null) {

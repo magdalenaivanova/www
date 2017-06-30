@@ -32,7 +32,7 @@
 			$this->validUserStmt = $this->conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
 			$this->getUserByIdStmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = ?");
 
-			$this->addNewTaskStmnt = $this->conn->prepare("INSERT INTO tasks (task_id, task_name, priority, status, due_date, date_added, description, assignee_id, assignee_mng_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$this->addNewTaskStmnt = $this->conn->prepare("INSERT INTO tasks (task_id, task_name, priority, status, due_date, date_added, description, assignee_id, assignee_mng_id, creator_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			$this->addNewUserStmnt = $this->conn->prepare("INSERT INTO users (user_id, username, password, mng_id, email, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 			$this->listTasksByStatus = $this->conn->prepare("SELECT * FROM tasks WHERE status = ? AND assignee_mng_id = ?");
@@ -65,9 +65,9 @@
 			return $this->getTaskById->fetch(PDO::FETCH_ASSOC);
 		}
 
-		public function addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id, $mng_id) {
+		public function addNewTask($taskName, $priority, $status, $dueDate, $description, $assignee_id, $mng_id, $creator_id) {
 			$dateAdded = date('Y-m-d');
-			$this->addNewTaskStmnt->execute(array(NULL, $taskName,  $priority, 'open', $dueDate, $dateAdded, $description, $assignee_id, $mng_id));
+			$this->addNewTaskStmnt->execute(array(NULL, $taskName,  $priority, 'open', $dueDate, $dateAdded, $description, $assignee_id, $mng_id, $creator_id));
 		}
 
 		public function getTasksByStatus($status, $mngId) {
@@ -86,6 +86,7 @@
 		}
 
 		public function updateTask($taskid, $taskName, $priority, $dueDate, $description, $assignee_id, $assignee_mng_id) {
+			//$dbConnection->updateTask($taskid, $taskName, $priority, $dueDate, $description, $assigneeId, $_SESSION['user_mng_id']);
 			$this->updateTaskStmnt->execute(array($taskName, $priority, $dueDate, $description, $assignee_id, $taskid));
 		}
 
