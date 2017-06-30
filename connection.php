@@ -36,7 +36,7 @@
 			$this->addNewUserStmnt = $this->conn->prepare("INSERT INTO users (user_id, username, password, mng_id, email, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 			$this->listTasksByStatus = $this->conn->prepare("SELECT * FROM tasks WHERE status = ? AND assignee_mng_id = ?");
-			$this->listEmployeesByManager = $this->conn->prepare("SELECT * FROM users WHERE mng_id = ?");
+			$this->listEmployeesByManager = $this->conn->prepare("SELECT * FROM users WHERE mng_id = ? || user_id = ?");
 			$this->getTaskById = $this->conn->prepare("SELECT * FROM tasks WHERE task_id = ?");
 
 			$this->updateTaskStmnt = $this->conn->prepare("UPDATE tasks SET task_name = ?,  priority = ?, due_date = ?, description = ?, assignee_id = ? WHERE task_id = ?");
@@ -76,7 +76,7 @@
 		}
 
 		public function getEmployees($mngId) {
-			$this->listEmployeesByManager->execute(array($mngId));
+			$this->listEmployeesByManager->execute(array($mngId, $mngId));
 			return $this->listEmployeesByManager->fetchAll(PDO::FETCH_ASSOC);
 		}
 
