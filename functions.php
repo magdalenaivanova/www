@@ -30,18 +30,18 @@ function showinputform($actionpage) {
     $today = date('Y-m-d');
     $employees = $dbConnection->getEmployees($_SESSION['user_mng_id']);
     echo "<table class=\"default\">";
-
     echo "<tr>";
     echo "<th>".$LANG["task"]."</th>";
     echo "<th>".$LANG["priority"]."</th>";
     echo "<th>".$LANG["duedate"]."</th>";
+    echo "<th>".$LANG["description"]."</th>";
     echo "<th>".$LANG["assignee"]."</th>";
-    echo "<th></th>";
+    // echo "<th></th>";
     echo "</tr>";
     echo "<tr>";
     echo "<td>";
-    echo "<form name=\"edit\" action=\"action.php\" method=\"GET\">";
-    echo "<input name=\"task\" size=40 type=\"text\" placeholder=\"".$LANG["tasktodo"]."\" required></input>";
+    echo "<form id=\"form-add\" name=\"edit\" action=\"action.php\" method=\"GET\">";
+    echo "<input name=\"task\" type=\"text\" placeholder=\"".$LANG["tasktodo"]."\" required></input>";
     echo "</td><td>";
     echo "<select name=\"prio\">\n";
         echo "<option value=\"2\">".$LANG["normal"]."</option>\n";
@@ -52,6 +52,8 @@ function showinputform($actionpage) {
     echo "</td><td>";
     echo "<input name=\"duedate\" type=\"text\" id=\"datepicker\" value=\"${today}\"></input>\n";
     echo "</td><td>";
+    echo "<input name=\"description\" type=\"text\" id=\"description\"></input>\n";
+    echo "</td><td>";
     echo "<input type=\"hidden\" name=\"action\" value=\"add\"></input>";
     echo "<input name=\"date_added\" type=\"hidden\" value=\"${today}\" required></input>\n";
         echo "<select name=\"assignee_id\">\n";
@@ -60,8 +62,8 @@ function showinputform($actionpage) {
                 echo "<option value=\"".$employee['user_id']."\">".$employee['first_name']." ".$employee['last_name']."</option>\n";
             }
         echo "</select>\n";
-    echo "</td><td>";
-    echo "<input type=\"submit\" name=\"submit\" value=\"".$LANG["addtask"]."\"></input>";
+    echo "</td><tr><td></td><td></td><td></td><td></td><td>";
+    echo "<input type=\"submit\" name=\"submit\" value=\"".$LANG["addtask"]."\"></input></tr>";
     echo "</form>";
     echo "</table>";
 }
@@ -95,6 +97,7 @@ function listtasks($taskstatus) { //,$mngId) {
     echo "<tr>";
     echo "<th>".$LANG["priority"]."</th>";
     echo "<th>".$LANG["task"]."</th>";
+    echo "<th>".$LANG["description"]."</th>";
     echo "<th>".$LANG["daysopen"]."</th>"; 
     echo "<th>".$LANG["duedate"]."</th>";
     echo "<th>".$LANG["assignee"]."</th>";
@@ -104,7 +107,7 @@ function listtasks($taskstatus) { //,$mngId) {
     echo "</thead>";
      
     if(empty($allTasks) || !is_array($allTasks)) {
-        echo "<tr><td colspan=7>".$LANG["notasks"]."</td></tr></table>";  
+        echo "<tr><td colspan=8>".$LANG["notasks"]."</td></tr></table>";  
         return;
     }
     
@@ -127,6 +130,9 @@ function listtasks($taskstatus) { //,$mngId) {
 
         # task name
         echo "<td>".$task['task_name']."</td>";
+
+        # description
+        echo "<td>".$task['description']."</td>";
 
         # days open
         $dayopen = NULL;

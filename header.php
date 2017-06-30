@@ -5,7 +5,7 @@ include("functions.php");
 ?>
 <!DOCTYPE html>
 <html><head>
-<title>Management</title>
+<title>Backlog Management</title>
 <meta charset="UTF-8">
 <meta name="description" content="" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>

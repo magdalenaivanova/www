@@ -4,6 +4,7 @@ $LANG = array(
     "about" => "About us",
     "assignee" => "Assignee",
     "assigner" => "Assigner",
+    "description" => "Description",
     "act" => "Action(s)",
     "tasktodo" => "Task name...",
     "addtask" => "Add new task",

@@ -23,7 +23,7 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 }
 
 # New task
-echo "<div id=\"maintab\" class=\"menu-content\">";
+echo "<div class=\"menu-content\" id=\"maintab\" >";
 echo "<h3>".$LANG["addtask"]."</h3>";
 echo "<p>";
 showinputform("action.php");
