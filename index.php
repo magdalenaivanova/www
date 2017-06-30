@@ -15,7 +15,7 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	echo "<li><a href=\"#todotab\">".$LANG["tasks"]."</a></li>";
 	echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 	echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
-	echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
+	echo "<li><a href=\"#trashtab\">".$LANG["trash"]."</a></li>";
 	if($_SESSION['user_mng_id'] == $_SESSION['user_id']) {
 		echo "<li><a href=\"action.php?action=addemployee\">Add Team Member</a></li>";
 	}
@@ -49,8 +49,8 @@ listtasks("closed");
 echo "</div>";
 
 # Deleted tasks
-echo "<div class=\"menu-content\" id=\"thrashtab\">";
-echo "<h3>".$LANG["thrash"]."</h3>";
+echo "<div class=\"menu-content\" id=\"trashtab\">";
+echo "<h3>".$LANG["trash"]."</h3>";
 listtasks("deleted");
 echo "</div>";
 
