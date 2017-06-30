@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if($currentUser != null) {
 		$_SESSION['loggedin'] = true;
 		$_SESSION['user_id'] = $currentUser['user_id'];
-		if($currentUser['mng_id'] == null) {
+		if(!isset($currentUser['mng_id']) || $currentUser['mng_id'] == null) {
 			$_SESSION['user_mng_id'] = $currentUser['user_id'];
 		} else {
 			$_SESSION['user_mng_id'] = $currentUser['mng_id'];
@@ -28,6 +28,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (empty($_GET['action'])) {
 	echo $LANG["noactiongiven"];
+	return;
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'addemployee' ) {
+	echo "<h2>".$LANG["addemployee"]."</h2>";
+	echo "<div class=\"col_5\">";
+	echo "<form name=\"addNewEmployee\" action=\"action.php\" method=\"GET\">";
+		echo "<div class=\"group\">";
+		echo "<label for=\"firstname\">First name</label>";
+	    echo "<input name=\"firstname\" type=\"text\" required></input>";
+		echo "</div>";
+	
+	    echo "<div class=\"group\">";
+	    echo "<label for=\"lastname\">Last name</label>";
+	    echo "<input name=\"lastname\" type=\"text\" required></input>";
+		echo "</div>";
+	
+		echo "<div class=\"group\">";
+		echo "<label for=\"username\">Username</label>";
+	    echo "<input name=\"username\" type=\"text\" required></input>";
+	    echo "</div>";
+
+	    echo "<div class=\"group\">";
+	    echo "<label for=\"email\">Email</label>";
+	    echo "<input name=\"email\" type=\"email\" required></input>";
+	    echo "</div>";
+	
+	    echo "<input type=\"hidden\" name=\"mng_id\" type=\"hidden\" value=\"".$_SESSION['user_mng_id']."\"></input>";
+	    echo "<input type=\"hidden\" name=\"action\" value=\"submitemployee\"></input>";
+
+	    echo "<input type=\"submit\" name=\"submit\" value=\"Add Employee\"></input>";
+    echo "</form>";
+	echo "</div>";
+
+	return;
+}
+// && !empty($_GET['firstname']) && !empty($_GET['lastname']) && !empty($_GET['username']) && !empty($_GET['email'])
+if (isset($_GET['submit']) && $_GET['action'] == 'submitemployee' && !empty($_GET['firstname']) && !empty($_GET['lastname']) && !empty($_GET['username']) && !empty($_GET['email'])) {
+	
+	$firstname=htmlspecialchars($_GET['firstname']);
+	$lastname=htmlspecialchars($_GET['lastname']);
+	$username=htmlspecialchars($_GET['username']);
+	$email=htmlspecialchars($_GET['email']);
+	$success = $dbConnection->addNewEmployee($firstname, $lastname, $username, $email, $_SESSION['user_mng_id']);
+	if ($success == true) {
+		echo "<div class=\"notice success\">You successfully registered new employee: ".$firstname." ".$lastname.". He or she will receive a confirmation e-mail.<div/>";
+		echo "<div><a href=\"./\">Go back!</a></div>";
+	} else {
+		echo "<div class=\"notice error\">Registration of new employee failed. Check your input or contact administration.<div/>";
+		echo "<div><a href=\"./\">Go back!</a></div>";
+	}
 	return;
 }
 

@@ -41,9 +41,9 @@ function showinputform($actionpage) {
     echo "<tr>";
     echo "<td>";
     echo "<form name=\"edit\" action=\"action.php\" method=\"GET\">";
-    echo "<input name=\"task\" size=40 type=\"text\" placeholder=\"".$LANG["tasktodo"]."\" ></input>";
+    echo "<input name=\"task\" size=40 type=\"text\" placeholder=\"".$LANG["tasktodo"]."\" required></input>";
     echo "</td><td>";
-    echo "<select name=\"prio\">\n";
+    echo "<select name=\"prio\" required>\n";
         echo "<option value=\"2\">".$LANG["normal"]."</option>\n";
         echo "<option value=\"1\">".$LANG["high"]."</option>\n";
         echo "<option value=\"3\">".$LANG["low"]."</option>\n";
@@ -53,7 +53,7 @@ function showinputform($actionpage) {
     echo "<input name=\"duedate\" type=\"text\" id=\"datepicker\" value=\"${today}\"></input>\n";
     echo "</td><td>";
     echo "<input type=\"hidden\" name=\"action\" value=\"add\"></input>";
-    echo "<input name=\"date_added\" type=\"hidden\" value=\"${today}\"></input>\n";
+    echo "<input name=\"date_added\" type=\"hidden\" value=\"${today}\" required></input>\n";
         echo "<select name=\"assignee_id\">\n";
             echo "<option value=\"\"></option>\n";
             foreach ($employees as $user => $employee) {

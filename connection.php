@@ -13,6 +13,8 @@
 		private $getTaskById = null;
 		private $updateTaskStmnt = null;
 		private $updateTaskStatusStmnt = null;
+		private $addNewUserStmnt = null;
+		private $changePasswordStmnt = null;
 
 		public function __construct() {
 			$this->conn = new PDO("mysql:host=$this->host;dbname=$this->db",$this->user,$this->pass);
@@ -20,13 +22,15 @@
 			$this->getUserByIdStmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = ?");
 
 			$this->addNewTaskStmnt = $this->conn->prepare("INSERT INTO tasks (task_id, task_name, priority, status, due_date, date_added, description, assignee_id, assignee_mng_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$this->addNewUserStmnt = $this->conn->prepare("INSERT INTO users (user_id, username, password, mng_id, email, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
 			$this->listTasksByStatus = $this->conn->prepare("SELECT * FROM tasks WHERE status = ? AND assignee_mng_id = ?");
 			$this->listEmployeesByManager = $this->conn->prepare("SELECT * FROM users WHERE mng_id = ?");
 			$this->getTaskById = $this->conn->prepare("SELECT * FROM tasks WHERE task_id = ?");
-			// public function updateTask($taskid, $taskName, $priority, $dueDate, $description, $assignee_id, $assignee_mng_id) {
 
 			$this->updateTaskStmnt = $this->conn->prepare("UPDATE tasks SET task_name = ?,  priority = ?, due_date = ?, description = ?, assignee_id = ? WHERE task_id = ?");
 			$this->updateTaskStatusStmnt = $this->conn->prepare("UPDATE tasks SET status = ? WHERE task_id = ?");
+			$this->changePasswordStmnt = $this->conn->prepare("UPDATE users SET password = ? WHERE user_id = ? AND password = ?");
 
 		}
 		
@@ -83,5 +87,16 @@
 		public function openTask($taskid) {
 			$this->updateTaskStatusStmnt->execute(array("progress", $taskid));
 		}
+
+		public function addNewEmployee($firstname, $lastname, $username, $email, $mng_id) {
+			// (user_id, username, password, mng_id, email, first_name, last_name)
+			$password = "qwerty";
+			return $this->addNewUserStmnt->execute(array(NULL, $username, $password, $mng_id, $email, $firstname, $lastname));
+		}
+
+		public function changeUserPassword($user_id, $oldPassword, $newPassword) {
+			return $this->changePasswordStmnt->execute(array($newPassword, $user_id, $oldPassword));
+		}
+
 	}
 ?>

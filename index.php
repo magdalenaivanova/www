@@ -16,8 +16,9 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] == true) {
 	echo "<li><a href=\"#progresstab\">".$LANG["progress"]."</a></li>";
 	echo "<li><a href=\"#finishedtab\">".$LANG["finishedtasks"]."</a></li>";
 	echo "<li><a href=\"#thrashtab\">".$LANG["thrash"]."</a></li>";
-	if($_SESSION['user_mng_id'] == $_SESSION['user_mng_id']) {
-		echo "<li><a href=\"add-employee.php\">".$LANG["newemployee"]."</a></li>";
+	if($_SESSION['user_mng_id'] == $_SESSION['user_id']) {
+		echo "<li><a href=\"action.php?action=addemployee\">Add New Team Member</a></li>";
+		//echo "<li><a href=\"action.php?action=addemployee\">".$LANG["newemployee"]."</a></li>";
 	}
 	echo "</ul>";
 }
