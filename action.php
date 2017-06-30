@@ -163,11 +163,8 @@ if (isset($_GET['submit']) && $_GET['action'] == 'add' && !empty($_GET['task']) 
 	$assignee_id=htmlspecialchars($_GET['assignee_id']);
 	$priority=htmlspecialchars($_GET['prio']);
 
-	$assignerId=$_SESSION['user_id'];
-
-	if($assigneeId=="") {
-		$assigneeId = NULL;
-		$assignerId = NULL;
+	if($assignee_id=="") {
+		$assignee_id = NULL;
 	}
 
 	#Validating priority. Only 4 possibilities.
